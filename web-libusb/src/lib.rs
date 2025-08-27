@@ -318,7 +318,7 @@ pub unsafe extern "C" fn libusb_get_active_config_descriptor(
                                     bDescriptorType: 0,
                                     bInterfaceNumber: 0,
                                     bAlternateSetting: setting.alternate_setting,
-                                    bNumEndpoints: (*endpoints).len() as u8,
+                                    bNumEndpoints: (&(*endpoints)).len() as u8,
                                     bInterfaceClass: setting.interface_class,
                                     bInterfaceSubClass: setting.interface_subclass,
                                     bInterfaceProtocol: setting.interface_protocol,
@@ -332,13 +332,13 @@ pub unsafe extern "C" fn libusb_get_active_config_descriptor(
                         let settings = Box::into_raw(settings.into_boxed_slice());
                         libusb_interface {
                             altsetting: (*settings).as_ptr(),
-                            num_altsetting: (*settings).len() as c_int,
+                            num_altsetting: (&(*settings)).len() as c_int,
                         }
                     })
                     .collect();
                 let interfaces = Box::into_raw(interfaces.into_boxed_slice());
                 config.interface = (*interfaces).as_ptr();
-                config.bNumInterfaces = (*interfaces).len() as u8;
+                config.bNumInterfaces = (&(*interfaces)).len() as u8;
                 *config_ptr = Box::into_raw(config);
                 LIBUSB_SUCCESS
             }
